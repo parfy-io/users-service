@@ -6,11 +6,11 @@ import (
 	"github.com/parfy-io/users-service/internal/storage"
 )
 
-var ErrClientAlreadyExists = errors.New("client with the given name already exists")
+var ErrClientAlreadyExists = errors.New("client with the given id already exists")
 
-func (s Service) CreateClient(name string) error {
+func (s Service) CreateClient(id string) error {
 	err := s.Storage.CreateClient(storage.Client{
-		Name: name,
+		ID: id,
 	})
 	if err != nil {
 		if errors.Is(err, storage.ErrClientAlreadyExists) {

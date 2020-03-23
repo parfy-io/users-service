@@ -10,7 +10,7 @@ Request:
 ```http request
 POST /v1/clients
 
-{"name": "test"}
+{"id": "test"}
 ```
 Response created:
 ```http response

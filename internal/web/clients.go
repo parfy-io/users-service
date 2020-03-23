@@ -12,7 +12,7 @@ import (
 
 func (s *Server) createClient(w http.ResponseWriter, r *http.Request) {
 	reqBody := struct {
-		Name string `json:"name"`
+		ID string `json:"id"`
 	}{}
 
 	err := json.NewDecoder(r.Body).Decode(&reqBody)
@@ -21,18 +21,18 @@ func (s *Server) createClient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	match, err := regexp.MatchString("^([a-z]|[0-9]|[A-Z])*$", reqBody.Name)
+	match, err := regexp.MatchString("^([a-z]|[0-9]|[A-Z])*$", reqBody.ID)
 	if err != nil {
-		logrus.WithError(err).Error("failed to compile create-client name-check regex")
+		logrus.WithError(err).Error("failed to compile create-client id-check regex")
 		writeInternalServerError(w)
 		return
 	}
 	if !match {
-		writeError(w, http.StatusBadRequest, "client>name must only contain a-zA-Z0-9")
+		writeError(w, http.StatusBadRequest, "client>id must only contain a-zA-Z0-9")
 		return
 	}
 
-	err = s.service.CreateClient(reqBody.Name)
+	err = s.service.CreateClient(reqBody.ID)
 	if err != nil {
 		if errors.Is(err, internal.ErrClientAlreadyExists) {
 			writeError(w, http.StatusConflict, "client already exists")
@@ -43,6 +43,6 @@ func (s *Server) createClient(w http.ResponseWriter, r *http.Request) {
 		writeInternalServerError(w)
 		return
 	}
-	w.Header().Add("Location", fmt.Sprintf("v1/clients/%s", reqBody.Name))
+	w.Header().Add("Location", fmt.Sprintf("v1/clients/%s", reqBody.ID))
 	w.WriteHeader(http.StatusCreated)
 }
