@@ -10,6 +10,7 @@ import (
 )
 
 type Service interface {
+	CreateClient(name string) error
 }
 
 type Server struct {
@@ -25,6 +26,8 @@ func NewServer(service Service, bindAddress string) *Server {
 	r := mux.NewRouter()
 	v1 := r.PathPrefix("/v1").Subrouter()
 	v1.Path("/internal/alive").Methods(http.MethodGet).HandlerFunc(s.aliveHandler)
+
+	v1.Path("/clients").Methods(http.MethodPost).HandlerFunc(s.createClient)
 
 	s.server = &http.Server{
 		Addr:    bindAddress,

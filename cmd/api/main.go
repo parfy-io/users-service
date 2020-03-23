@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/ardanlabs/conf"
+	"github.com/parfy-io/users-service/internal"
 	"github.com/parfy-io/users-service/internal/storage"
 	"github.com/parfy-io/users-service/internal/web"
 	"github.com/sirupsen/logrus"
@@ -35,7 +36,11 @@ func main() {
 		logrus.WithError(err).Fatal("Could not migrate database")
 	}
 
-	server := web.NewServer(nil, cfg.ServerAddress)
+	service := internal.Service{
+		Storage: s,
+	}
+
+	server := web.NewServer(service, cfg.ServerAddress)
 
 	errs := make(chan error)
 	go func() {
