@@ -21,7 +21,7 @@ func (s *Server) createClient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	match, err := regexp.MatchString("^([a-z]|[0-9]|[A-Z])*$", reqBody.ID)
+	match, err := regexp.MatchString("^([a-z]|[0-9]|[A-Z])+$", reqBody.ID)
 	if err != nil {
 		logrus.WithError(err).Error("failed to compile create-client id-check regex")
 		writeInternalServerError(w)
@@ -43,6 +43,6 @@ func (s *Server) createClient(w http.ResponseWriter, r *http.Request) {
 		writeInternalServerError(w)
 		return
 	}
-	w.Header().Add("Location", fmt.Sprintf("v1/clients/%s", reqBody.ID))
+	w.Header().Add("Location", fmt.Sprintf("/v1/clients/%s", reqBody.ID))
 	w.WriteHeader(http.StatusCreated)
 }

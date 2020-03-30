@@ -4,14 +4,18 @@ import (
 	"errors"
 	"fmt"
 	"github.com/parfy-io/users-service/internal/storage"
-	"github.com/parfy-io/users-service/internal/web"
 )
 
-func (s Service) CreateUser(clientID string, user web.User) (int64, error) {
+type User struct {
+	ID       int64
+	FullName string
+	Names    []string
+}
+
+func (s Service) CreateUser(clientID string, user User) (int64, error) {
 	id, err := s.Storage.CreateUser(storage.User{
 		FullName: user.FullName,
 		Names:    user.Names,
-		EMail:    user.EMail,
 		ClientID: clientID,
 	})
 	if err != nil {

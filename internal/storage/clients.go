@@ -17,7 +17,7 @@ func (s Storage) CreateClient(c Client) error {
 	_, err := s.db.Exec("INSERT INTO clients (id) VALUES($1);", c.ID)
 	if err != nil {
 		pqErr := err.(*pq.Error)
-		if pqErr.Constraint == "name_unique" {
+		if pqErr.Constraint == "clients_id_unique" {
 			return ErrClientAlreadyExists
 		}
 		return fmt.Errorf("failed to exec stmt: %w", err)

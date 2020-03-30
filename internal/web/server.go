@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"github.com/parfy-io/users-service/internal"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 type Service interface {
 	CreateClient(name string) error
+	CreateUser(clientID string, user internal.User) (int64, error)
 }
 
 type Server struct {
@@ -27,6 +29,7 @@ func NewServer(service Service, bindAddress string) *Server {
 	v1 := r.PathPrefix("/v1").Subrouter()
 	v1.Path("/internal/alive").Methods(http.MethodGet).HandlerFunc(s.aliveHandler)
 
+	v1.Path("/clients/{clientID}/users").Methods(http.MethodPost).HandlerFunc(s.createUser)
 	v1.Path("/clients").Methods(http.MethodPost).HandlerFunc(s.createClient)
 
 	s.server = &http.Server{

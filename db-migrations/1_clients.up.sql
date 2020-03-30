@@ -1,5 +1,5 @@
 CREATE TABLE clients
 (
     id text NOT NULL,
-    CONSTRAINT name_unique PRIMARY KEY (id)
+    CONSTRAINT clients_id_unique PRIMARY KEY (id)
 );
