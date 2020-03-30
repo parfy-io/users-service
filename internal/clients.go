@@ -7,6 +7,7 @@ import (
 )
 
 var ErrClientAlreadyExists = errors.New("client with the given id already exists")
+var ErrClientDoesntExists = errors.New("client with the given id does not exists")
 
 func (s Service) CreateClient(id string) error {
 	err := s.Storage.CreateClient(storage.Client{

@@ -7,7 +7,7 @@ import (
 )
 
 var ErrClientAlreadyExists = errors.New("client with the given id already exists")
-var ErrClientNotExists = errors.New("client with the given id does not exists")
+var ErrClientDoesntExists = errors.New("client with the given id does not exists")
 
 type Client struct {
 	ID string
