@@ -15,7 +15,7 @@ POST /v1/clients
 Response created:
 ```http response
 201 CREATED
-Location: v1/clients/test
+Location: /v1/clients/test
 ```
 Response client already exists:
 ```http response
